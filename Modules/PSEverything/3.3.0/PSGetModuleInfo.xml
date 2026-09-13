@@ -1,0 +1,143 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>Microsoft.PowerShell.Commands.PSRepositoryItemInfo</T>
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="Name">PSEverything</S>
+      <Version N="Version">3.3.0</Version>
+      <S N="Type">Module</S>
+      <S N="Description">Powershell access to Everything - Blazingly fast file system searches</S>
+      <S N="Author">Staffan Gustafsson</S>
+      <S N="CompanyName">PowerCode</S>
+      <S N="Copyright">(c) 2016 sgustafsson. All rights reserved.</S>
+      <DT N="PublishedDate">2022-04-22T08:19:20+06:00</DT>
+      <Obj N="InstalledDate" RefId="1">
+        <DT>2025-12-27T21:08:43.4355358+06:00</DT>
+        <MS>
+          <Obj N="DisplayHint" RefId="2">
+            <TN RefId="1">
+              <T>Microsoft.PowerShell.Commands.DisplayHintType</T>
+              <T>System.Enum</T>
+              <T>System.ValueType</T>
+              <T>System.Object</T>
+            </TN>
+            <ToString>DateTime</ToString>
+            <I32>2</I32>
+          </Obj>
+        </MS>
+      </Obj>
+      <Nil N="UpdatedDate" />
+      <URI N="LicenseUri">https://raw.githubusercontent.com/powercode/PSEverything/master/LICENSE</URI>
+      <URI N="ProjectUri">https://github.com/powercode/PSEverything</URI>
+      <Nil N="IconUri" />
+      <Obj N="Tags" RefId="3">
+        <TN RefId="2">
+          <T>System.Object[]</T>
+          <T>System.Array</T>
+          <T>System.Object</T>
+        </TN>
+        <LST>
+          <S>Search</S>
+          <S>Everything</S>
+          <S>voidtools</S>
+          <S>regex</S>
+          <S>grep</S>
+          <S>PSModule</S>
+          <S>PSEdition_Desktop</S>
+          <S>PSEdition_Core</S>
+        </LST>
+      </Obj>
+      <Obj N="Includes" RefId="4">
+        <TN RefId="3">
+          <T>System.Collections.Hashtable</T>
+          <T>System.Object</T>
+        </TN>
+        <DCT>
+          <En>
+            <S N="Key">RoleCapability</S>
+            <Obj N="Value" RefId="5">
+              <TNRef RefId="2" />
+              <LST />
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Function</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Workflow</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+          <En>
+            <S N="Key">Cmdlet</S>
+            <Obj N="Value" RefId="6">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Search-Everything</S>
+                <S>Select-EverythingString</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">Command</S>
+            <Obj N="Value" RefId="7">
+              <TNRef RefId="2" />
+              <LST>
+                <S>Search-Everything</S>
+                <S>Select-EverythingString</S>
+              </LST>
+            </Obj>
+          </En>
+          <En>
+            <S N="Key">DscResource</S>
+            <Ref N="Value" RefId="5" />
+          </En>
+        </DCT>
+      </Obj>
+      <Nil N="PowerShellGetFormatVersion" />
+      <S N="ReleaseNotes">2.3: Bug fixes. Sorted output._x000D__x000A_2.1: Upgrading to SDK matching 1.4.1.809b  - Fixing hang when calling from Eleveated powershell_x000D__x000A_to Everything._x000D__x000A_Now works with both eleveated and non-elevated processes as long as Everything is running as admin._x000D__x000A_2.0:_x000D__x000A_Implements tabcompletion._x000D__x000A_Quoting filter paths_x000D__x000A_Requires PowerShell 5.0 or greater_x000D__x000A_1.3.3:_x000D__x000A_Really fixing issue where an error was written in Select-EverythingString when Search-Everything did not return any results_x000D__x000A_1.3.2:_x000D__x000A_Fixing issue where an error was written in Select-EverythingString when Search-Everything did not return any results_x000D__x000A_1.3.1:_x000D__x000A_Bug fix for -Filter that didn't work in combination with non-global searches.</S>
+      <Obj N="Dependencies" RefId="8">
+        <TNRef RefId="2" />
+        <LST />
+      </Obj>
+      <S N="RepositorySourceLocation">https://www.powershellgallery.com/api/v2</S>
+      <S N="Repository">PSGallery</S>
+      <S N="PackageManagementProvider">NuGet</S>
+      <Obj N="AdditionalMetadata" RefId="9">
+        <TN RefId="4">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="copyright">(c) 2016 sgustafsson. All rights reserved.</S>
+          <S N="description">Powershell access to Everything - Blazingly fast file system searches</S>
+          <S N="requireLicenseAcceptance">False</S>
+          <S N="releaseNotes">2.3: Bug fixes. Sorted output._x000D__x000A_2.1: Upgrading to SDK matching 1.4.1.809b  - Fixing hang when calling from Eleveated powershell_x000D__x000A_to Everything._x000D__x000A_Now works with both eleveated and non-elevated processes as long as Everything is running as admin._x000D__x000A_2.0:_x000D__x000A_Implements tabcompletion._x000D__x000A_Quoting filter paths_x000D__x000A_Requires PowerShell 5.0 or greater_x000D__x000A_1.3.3:_x000D__x000A_Really fixing issue where an error was written in Select-EverythingString when Search-Everything did not return any results_x000D__x000A_1.3.2:_x000D__x000A_Fixing issue where an error was written in Select-EverythingString when Search-Everything did not return any results_x000D__x000A_1.3.1:_x000D__x000A_Bug fix for -Filter that didn't work in combination with non-global searches.</S>
+          <S N="isLatestVersion">True</S>
+          <S N="isAbsoluteLatestVersion">True</S>
+          <S N="versionDownloadCount">528532</S>
+          <S N="downloadCount">1676782</S>
+          <S N="packageSize">111136</S>
+          <S N="published">22-Apr-22 8:19:20 AM +06:00</S>
+          <S N="created">22-Apr-22 8:19:20 AM +06:00</S>
+          <S N="lastUpdated">27-Dec-25 2:10:00 PM +06:00</S>
+          <S N="tags">Search Everything voidtools regex grep PSModule PSEdition_Desktop PSEdition_Core PSCmdlet_Search-Everything PSCommand_Search-Everything PSCmdlet_Select-EverythingString PSCommand_Select-EverythingString PSIncludes_Cmdlet</S>
+          <S N="developmentDependency">False</S>
+          <S N="updated">2025-12-27T14:10:00Z</S>
+          <S N="NormalizedVersion">3.3.0</S>
+          <S N="Authors">Staffan Gustafsson</S>
+          <S N="IsPrerelease">false</S>
+          <S N="ItemType">Module</S>
+          <S N="FileList">PSEverything.nuspec|PSEverything.psd1|about_PSEverything.help.txt|Everything32.dll|Everything64.dll|LICENSE|PSEverything.deps.json|PSEverything.dll|PSEverything.dll-Help.xml|PSEverything.pdb</S>
+          <S N="GUID">f262ec02-4a88-49e5-94da-e25aab9cbf7a</S>
+          <S N="PowerShellVersion">5.1</S>
+          <S N="CompanyName">PowerCode Consulting AB</S>
+        </MS>
+      </Obj>
+      <S N="InstalledLocation">C:\Users\adnan\Documents\PowerShell\Modules\PSEverything\3.3.0</S>
+    </MS>
+  </Obj>
+</Objs>

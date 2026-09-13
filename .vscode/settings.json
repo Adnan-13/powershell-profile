@@ -1,0 +1,7 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "Get-Module": true,
+        "Expand-GitCommand": true,
+        "Invoke-PsFzfGitBranches": true
+    }
+}
