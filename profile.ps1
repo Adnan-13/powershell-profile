@@ -15,7 +15,9 @@ $env:FZF_CTRL_T_OPTS = "--preview 'bat -n --color=always {}' --bind 'ctrl-/:chan
 # and only then calls that override.
 
 # --- 1. CORE UTILITIES ---
-# Use CTT's built-in 'Invoke-Profile' to reload if available (regular pwsh), else reload manually
+# Use CTT's built-in 'Invoke-Profile' to reload if available (regular pwsh), else reload manually.
+# Called plainly it refreshes env vars, modules and key bindings only; edited functions and
+# aliases need '. Reload-Profile' (dot-sourced) or a new window.
 function Import-Profile {
     if (Get-Command Invoke-Profile -ErrorAction SilentlyContinue) {
         Invoke-Profile
