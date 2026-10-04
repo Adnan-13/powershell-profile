@@ -1,4 +1,4 @@
-# PSReadLine must be loaded before PSFzf (PSFzf README).
+﻿# PSReadLine must be loaded before PSFzf (PSFzf README).
 if (-not (Get-Module -Name PSReadLine)) {
     Import-Module PSReadLine
 }
@@ -16,7 +16,7 @@ $env:FZF_CTRL_T_OPTS = "--preview 'bat -n --color=always {}' --bind 'ctrl-/:chan
 
 # --- 1. CORE UTILITIES ---
 # Use CTT's built-in 'Invoke-Profile' to reload if available (regular pwsh), else reload manually
-function Reload-Profile {
+function Import-Profile {
     if (Get-Command Invoke-Profile -ErrorAction SilentlyContinue) {
         Invoke-Profile
     } else {
@@ -24,14 +24,18 @@ function Reload-Profile {
         . $PROFILE.CurrentUserCurrentHost
     }
 }
+Set-Alias -Name Reload-Profile -Value Import-Profile
 
 # --- 2. DEVELOPER OPTIMIZATIONS (JS/TS, Python, Git) ---
-function Invoke-FzfNodeModules {
-    $dir = Get-ChildItem -Path . -Filter "node_modules" -Recurse -Directory -ErrorAction SilentlyContinue | 
-           Select-Object -ExpandProperty FullName | 
+function Remove-NodeModulesDirectory {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+
+    $dir = Get-ChildItem -Path . -Filter "node_modules" -Recurse -Directory -ErrorAction SilentlyContinue |
+           Select-Object -ExpandProperty FullName |
            fzf --prompt="Clean node_modules > " --header="Select to REMOVE"
-    if ($dir) {
-        Write-Host "Removing $dir..." -ForegroundColor Yellow
+    if ($dir -and $PSCmdlet.ShouldProcess($dir, 'Remove directory')) {
+        Write-Information -MessageData "Removing $dir..." -InformationAction Continue
         Remove-Item -Path $dir -Recurse -Force
     }
 }
@@ -85,7 +89,7 @@ function fo {
 # Fuzzy Docker Manager (if docker exists)
 function dps {
     if (Get-Command docker -ErrorAction SilentlyContinue) {
-        $container = docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}" | 
+        $container = docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}" |
             fzf --header "Select Container" --header-lines 1 --border --layout=reverse
         if ($container) {
             $id = ($container -split "\s+")[0]
@@ -100,7 +104,7 @@ function dps {
             }
         }
     } else {
-        Write-Host "Docker not found in PATH" -ForegroundColor Yellow
+        Write-Warning "Docker not found in PATH"
     }
 }
 
@@ -109,13 +113,23 @@ Set-Alias -Name kll -Value kp
 Set-Alias -Name v -Value fo
 
 # --- 4. CTT OVERRIDES & FIXES ---
+# CTT's Update-PowerShell forwards its own -WhatIf/-Confirm here via @PSBoundParameters
 function Update-PowerShell_Override {
-    Write-Host "Manually checking for PowerShell updates via winget..." -ForegroundColor Cyan
-    # Using --force to bypass the "different install technology" conflict
-    winget upgrade --id Microsoft.PowerShell --source winget --accept-source-agreements --accept-package-agreements --force
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+
+    if ($PSCmdlet.ShouldProcess('Microsoft.PowerShell', 'winget upgrade')) {
+        Write-Information -MessageData "Checking for PowerShell updates via winget..." -InformationAction Continue
+        # Using --force to bypass the "different install technology" conflict
+        winget upgrade --id Microsoft.PowerShell --source winget --accept-source-agreements --accept-package-agreements --force
+    }
 }
 
 function Set-PredictionSource_Override {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '',
+        Justification = 'Name is fixed by the CTT override contract; it only changes PSReadLine state of the current session.')]
+    param()
+
     # PSFzf's documented way to bind its handlers: Ctrl+t files, Ctrl+r history,
     # Alt+c cd into a directory, Alt+a pick an argument from history
     Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' `
