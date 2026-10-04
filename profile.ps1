@@ -1,17 +1,18 @@
-Import-Module PSFzf
+# PSReadLine must be loaded before PSFzf (PSFzf README).
 if (-not (Get-Module -Name PSReadLine)) {
     Import-Module PSReadLine
 }
-
-# PSFzf Key Handlers (Mandatory override for Ctrl+r)
-Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { Invoke-FzfPsReadlineHandlerHistory }
-Set-PSReadLineKeyHandler -Chord 'Ctrl+t' -ScriptBlock { Invoke-FzfPsReadlineHandlerProvider }
+Import-Module PSFzf
 
 # PSFzf UI Customization (Boxed and Modern Look)
 $env:FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --border --margin=1 --padding=1 --info=inline --preview-window='right:60%' --color='hl:148,hl+:154,pointer:032,marker:010,bg+:237,gutter:008,border:057,header:037,label:065,query:158' --prompt='> ' --pointer='▶' --marker='✓'"
 
-# Force Tab to use FZF for every completion
-Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+# Ctrl+t file preview with bat; Ctrl+/ cycles the preview window (fzf README example)
+$env:FZF_CTRL_T_OPTS = "--preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+# Key handlers live in Set-PredictionSource_Override below: CTT's
+# Initialize-PSReadLine sets EditMode, which resets every key handler,
+# and only then calls that override.
 
 # --- 1. CORE UTILITIES ---
 # Use CTT's built-in 'Invoke-Profile' to reload if available (regular pwsh), else reload manually
@@ -116,16 +117,12 @@ function Update-PowerShell_Override {
 }
 
 function Set-PredictionSource_Override {
-    # Custom key handlers for PSFzf
-    Set-PSReadLineKeyHandler -Chord 'Ctrl+r' `
-                             -BriefDescription 'Fzf Reverse History Select' `
-                             -Description 'Run fzf to search through PSReadline history' `
-                             -ScriptBlock { Invoke-FzfPsReadlineHandlerHistory }
-
-    Set-PSReadLineKeyHandler -Chord 'Ctrl+t' `
-                             -BriefDescription 'Fzf Provider Select' `
-                             -Description 'Run fzf for current provider based on current token' `
-                             -ScriptBlock { Invoke-FzfPsReadlineHandlerProvider }
+    # PSFzf's documented way to bind its handlers: Ctrl+t files, Ctrl+r history,
+    # Alt+c cd into a directory, Alt+a pick an argument from history
+    Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' `
+                    -PSReadlineChordReverseHistory 'Ctrl+r' `
+                    -PSReadlineChordSetLocation 'Alt+c' `
+                    -PSReadlineChordReverseHistoryArgs 'Alt+a'
 
     # Force Tab to use FZF instead of CTT's MenuComplete
     Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
@@ -139,3 +136,8 @@ function Set-PredictionSource_Override {
         Set-PSReadLineOption -MaximumHistoryCount 10000
     }
 }
+
+# --- Minimalisque workspace identity (switches GitHub/npm/Node env inside D:\Work\Minimalisque) ---
+$minimalisqueEnv = Join-Path $HOME '.config\minimalisque\shell\minimalisque-env.ps1'
+if (Test-Path -LiteralPath $minimalisqueEnv) { . $minimalisqueEnv }
+Remove-Variable minimalisqueEnv
