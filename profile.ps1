@@ -44,7 +44,6 @@ function venv {
 }
 
 # Shortcut for common dev tasks
-function ni { npm install $args }
 function nr { npm run $args }
 function py { python $args }
 
